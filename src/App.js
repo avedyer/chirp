@@ -1,10 +1,19 @@
-import logo from './logo.svg';
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+
 import './App.css';
+
+import Home from "./home";
+import User from "./user";
 
 function App() {
   return (
     <div className="App">
-      <h1>chirp.</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />}/>
+          <Route path='/user:id' element={<User />}/>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
