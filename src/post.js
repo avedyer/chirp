@@ -7,8 +7,8 @@ function Post(props) {
       <div className="content">
         <div className="topline">
           <div className="info">
-            <span className="name"></span>
-            <span className="handle">{props.post.user}</span>
+            <span className="name">{props.user.name}</span>
+            <span className="handle">@{props.post.user}</span>
             <span className="time"></span>
           </div>
           <div className="options"></div>
