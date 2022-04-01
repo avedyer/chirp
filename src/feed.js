@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import placeholders from './placeholders';
 import Post from './post';
 
-function Feed() {
+function Feed(props) {
 
   const [posts, setPosts] = useState(placeholders.posts);
 
