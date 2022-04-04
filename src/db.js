@@ -17,9 +17,21 @@ const db = (() => {
   const app = initializeApp(firebaseConfig);
   const firestore = getFirestore(app);
 
-  function setPost(data) {
+  async function setPost(data) {
     const post = {...data};
-    setDoc(doc(firestore, 'posts', post.id.toString()), post)
+
+    const posts = await getPosts();
+    const ids = posts.map(post => post.id)
+
+    let newId = Math.floor(Math.random() * (10**12)).toString()
+
+    while(ids.includes(newId)) {
+      newId = Math.floor(Math.random * (10**12)).toString()
+    }
+
+    post.id = newId;
+    
+    setDoc(doc(firestore, 'posts', post.id), post)
   }
 
   function setUser(data) {
@@ -43,7 +55,6 @@ const db = (() => {
       }
     })
 
-    console.log(userList)
     return userList
   }
 

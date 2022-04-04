@@ -26,7 +26,6 @@ function PostForm(props) {
 
   function buildPost() {
     const post =  {
-      id: Math.floor(Math.random() * (10**12)),
       time: new Date(),
       user: props.user,
       text: text,
