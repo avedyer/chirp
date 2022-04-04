@@ -1,5 +1,25 @@
+import { useEffect, useState } from 'react';
+
+import db from './db'
+
 function Post(props) {
+
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function fetchUser() {
+      const userList = await db.getUsers({id: props.post.user});
+      setUser(userList[0])
+    }
+    if (!user) {
+      fetchUser()
+    }
+  }, [])
+
   return(
+    
+    user ?
+
     <div className="post">
       <div className="sidebar">
         <img className="pfp" src=''></img>
@@ -7,7 +27,7 @@ function Post(props) {
       <div className="content">
         <div className="topline">
           <div className="info">
-            <span className="name">{props.user.name}</span>
+            <span className="name">{user.name}</span>
             <span className="handle">@{props.post.user}</span>
             <span className="time"></span>
           </div>
@@ -23,6 +43,10 @@ function Post(props) {
         </div>
       </div>
     </div>
+
+    :
+
+    'loading...'
   )
 }
 

@@ -1,4 +1,4 @@
-import { getFirestore } from "firebase/firestore"
+import { collection, getDocs, getFirestore } from "firebase/firestore"
 import { initializeApp } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -26,10 +26,53 @@ const db = (() => {
     const user = {...data};
     setDoc(doc(firestore, 'users', user.id), user)
   }
+
+  async function getUsers(params) {
+
+    const userCollection = collection(firestore, 'users');
+    const userSnapshot = await getDocs(userCollection);
+    let userList = userSnapshot.docs.map(doc => doc.data())
+
+    Object.keys(params).forEach((param) => {
+      if (Object.keys(userList).includes(param)) {
+        userList.forEach((user, index) => {
+          if (user.param !== params.param) {
+            userList.splice(index, 1);
+          }
+        })
+      }
+    })
+
+    console.log(userList)
+    return userList
+  }
+
+  async function getPosts(params) {
+
+    const postCollection = collection(firestore, 'posts');
+    const postSnapshot = await getDocs(postCollection);
+    let postList = postSnapshot.docs.map(doc => doc.data())
+
+    if (params) {
+      Object.keys(params).forEach((param) => {
+        if (Object.keys(postList).includes(param)) {
+          postList.forEach((post, index) => {
+            if (post.param !== params.param) {
+              postList.splice(index, 1);
+            }
+          })
+        }
+      })
+    }
+
+    return postList
+  }
   
   return {
     setPost,
     setUser,
+    getUsers,
+    getPosts,
   }
 
 })()
