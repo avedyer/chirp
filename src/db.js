@@ -33,11 +33,13 @@ const db = (() => {
     
     setDoc(doc(firestore, 'posts', post.id), post)
   }
+  
 
   function setUser(data) {
     const user = {...data};
     setDoc(doc(firestore, 'users', user.id), user)
   }
+
 
   async function getUsers(params) {
 
@@ -57,6 +59,7 @@ const db = (() => {
 
     return userList
   }
+
 
   async function getPosts(params) {
 
