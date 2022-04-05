@@ -1,12 +1,14 @@
 import { getAuth, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import db from "./db";
 
 
 function Login() {
 
   const [user, setUser] = useState()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user) {
@@ -44,7 +46,11 @@ function Login() {
   async function redirect() {
     const userList = (await db.getUsers({email: user.email}))
     if(userList.length === 0) {
-      window.location.assign('/signup')
+      navigate('/signup', {
+        state: {
+          email: user.email
+        }
+      })
     }
   }
 
