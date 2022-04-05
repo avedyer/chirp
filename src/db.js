@@ -33,7 +33,7 @@ const db = (() => {
     
     setDoc(doc(firestore, 'posts', post.id), post)
   }
-  
+
 
   function setUser(data) {
     const user = {...data};
@@ -47,15 +47,17 @@ const db = (() => {
     const userSnapshot = await getDocs(userCollection);
     let userList = userSnapshot.docs.map(doc => doc.data())
 
-    Object.keys(params).forEach((param) => {
-      if (Object.keys(userList).includes(param)) {
-        userList.forEach((user, index) => {
-          if (user.param !== params.param) {
-            userList.splice(index, 1);
-          }
-        })
-      }
-    })
+    if (params) {
+      Object.keys(params).forEach((param) => {
+        if (Object.keys(userList[0]).includes(param)) {
+          userList.forEach((user, index) => {
+            if (user[param] !== params[param]) {
+              userList.splice(index, 1);
+            }
+          })
+        }
+      })
+    }
 
     return userList
   }
@@ -71,7 +73,7 @@ const db = (() => {
       Object.keys(params).forEach((param) => {
         if (Object.keys(postList).includes(param)) {
           postList.forEach((post, index) => {
-            if (post.param !== params.param) {
+            if (post[param] !== params[param]) {
               postList.splice(index, 1);
             }
           })

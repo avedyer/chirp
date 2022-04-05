@@ -1,6 +1,7 @@
 import { getAuth, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
 
 import { useEffect, useState } from "react";
+import db from "./db";
 
 
 function Login() {
@@ -8,7 +9,9 @@ function Login() {
   const [user, setUser] = useState()
 
   useEffect(() => {
-    console.log(user)
+    if (user) {
+      redirect()
+    }
   }, [user])
 
   async function signIn() {
@@ -23,7 +26,7 @@ function Login() {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       // The signed-in user info.
-      setUser(result.user)
+      setUser(result.user);
       // ...
     }).catch((error) => {
       // Handle Errors here.
@@ -36,6 +39,13 @@ function Login() {
       // ...
     });
     
+  }
+
+  async function redirect() {
+    const userList = (await db.getUsers({email: user.email}))
+    if(userList.length === 0) {
+      window.location.assign('/signup')
+    }
   }
 
   function signOutUser() {

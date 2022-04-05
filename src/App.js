@@ -5,7 +5,7 @@ import './App.css';
 
 import Home from "./home";
 import User from "./user";
-import Login from "./login";
+import Signup from "./signup";
 
 function App() {
 
@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}/>
           <Route path='/user:id' element={<User />}/>
+          <Route path='/signup' element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </div>
