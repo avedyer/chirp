@@ -18,6 +18,7 @@ function PostForm(props) {
   }
 
   function handleSubmit() {
+    console.log(buildPost())
     if(text && !sent) {
       db.setPost(buildPost())
       setSent(true)

@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 import db from "./db";
 
 
-function Login() {
+function Login(props) {
 
   const [user, setUser] = useState()
   const navigate = useNavigate()
 
   useEffect(() => {
     if (user) {
-      redirect()
+      redirect().then(() => {
+        props.passUser(user);
+      })
     }
   }, [user])
 

@@ -1,16 +1,28 @@
 import Feed from "./feed"
 import PostForm from "./postForm"
-
 import Login from "./login";
 
-function Home(props) {
+import db from "./db";
 
-  const testUserId = 'avexre'
+import { useEffect, useState } from "react";
+
+function Home() {
+
+  const [user, setUser] = useState()
+
+  useEffect(() => {
+    console.log(user)
+  }, [user])
+
+  async function fetchUser(login) {
+    const userList = (await db.getUsers({email: login.email}))
+    setUser(userList[0]);
+  }
 
   return (
     <div className="home">
-      <Login />
-      <PostForm user={testUserId} />
+      <Login passUser={fetchUser}/>
+      <PostForm user={user ? user.id : null} />
       <Feed />
     </div>
   )
