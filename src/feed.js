@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import placeholders from './placeholders';
 import Post from './post';
 
 import db from './db'
 
-function Feed(props) {
+function Feed() {
 
   const [posts, setPosts] = useState([]);
 
@@ -24,7 +25,7 @@ function Feed(props) {
     <div className='feed'>
       {posts.length > 0 ? 
         posts.map((post) => {
-          return <Post post={post}/>
+          return <Post post={post} key={post.id}/>
         })
         :
         'loading...'

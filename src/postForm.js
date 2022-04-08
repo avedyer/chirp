@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import db from './db'
 
 function PostForm(props) {
@@ -6,6 +7,8 @@ function PostForm(props) {
   const [text, setText] = useState()
   const [overflow, setOverflow] = useState(false)
   const [sent, setSent] = useState(false)
+
+
 
   function handleInput(input) {
     setSent(false)
@@ -18,7 +21,6 @@ function PostForm(props) {
   }
 
   function handleSubmit() {
-    console.log(buildPost())
     if(text && !sent) {
       db.setPost(buildPost())
       setSent(true)

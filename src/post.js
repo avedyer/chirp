@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import db from './db'
 
 function Post(props) {
+
+  const navigate = useNavigate()
 
   const [user, setUser] = useState();
 
@@ -16,6 +19,15 @@ function Post(props) {
     }
   }, [])
 
+  function navigateToUser() {
+    console.log('navigating')
+    navigate(`/user/${props.post.user}`, {
+      state: {
+        user: user
+      }
+    })
+  }
+
   return(
     
     user ?
@@ -27,8 +39,8 @@ function Post(props) {
       <div className="content">
         <div className="topline">
           <div className="info">
-            <span className="name">{user.name}</span>
-            <span className="handle">@{props.post.user}</span>
+            <span className="name" onClick={() => navigateToUser()}>{user.name}</span>
+            <span className="handle" onClick={() => navigateToUser()}>@{props.post.user}</span>
             <span className="time"></span>
           </div>
           <div className="options"></div>

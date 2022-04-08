@@ -65,6 +65,7 @@ function Signup() {
         bio: bio,
         private: privateMode,
         pfp: '',
+        banner: '',
         followers: [],
         following: [],
       }

@@ -10,10 +10,6 @@ function Home() {
 
   const [user, setUser] = useState()
 
-  useEffect(() => {
-    console.log(user)
-  }, [user])
-
   async function fetchUser(login) {
     const userList = (await db.getUsers({email: login.email}))
     setUser(userList[0]);
