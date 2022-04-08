@@ -57,16 +57,19 @@ function Signup() {
   }
 
   function handleSubmit() {
-    console.log({
-      id: validId,
-      name: validName,
-    })
-    console.log({
-      id: id,
-      name: name,
-      bio: bio,
-      private: privateMode
-    })
+    if (validId && validName) {
+      const user = {
+        email: location.state.email,
+        id: id,
+        name: name,
+        bio: bio,
+        private: privateMode,
+        pfp: '',
+        followers: [],
+        following: [],
+      }
+      db.setUser(user);
+    }
   }
 
   return(
