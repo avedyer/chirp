@@ -45,21 +45,23 @@ const db = (() => {
 
     const userCollection = collection(firestore, 'users');
     const userSnapshot = await getDocs(userCollection);
-    let userList = userSnapshot.docs.map(doc => doc.data())
+    const userList = userSnapshot.docs.map(doc => doc.data())
+
+    let trimUserList = []
 
     if (params) {
       Object.keys(params).forEach((param) => {
         if (Object.keys(userList[0]).includes(param)) {
-          userList.forEach((user, index) => {
-            if (user[param] !== params[param]) {
-              userList.splice(index, 1);
+          userList.forEach((user) => {
+            if (user[param] === params[param]) {
+              trimUserList.push(user)
             }
           })
         }
       })
     }
 
-    return userList
+    return trimUserList
   }
 
 
@@ -67,14 +69,16 @@ const db = (() => {
 
     const postCollection = collection(firestore, 'posts');
     const postSnapshot = await getDocs(postCollection);
-    let postList = postSnapshot.docs.map(doc => doc.data())
+    const postList = postSnapshot.docs.map(doc => doc.data())
+
+    let trimPostList = []
 
     if (params) {
       Object.keys(params).forEach((param) => {
         if (Object.keys(postList).includes(param)) {
-          postList.forEach((post, index) => {
-            if (post[param] !== params[param]) {
-              postList.splice(index, 1);
+          postList.forEach((post) => {
+            if (post[param] === params[param]) {
+              trimPostList.push(post)
             }
           })
         }

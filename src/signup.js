@@ -47,6 +47,11 @@ function Signup() {
     setValidName(input.length > 0 && input.length < 64)
   }
 
+  function handlePhoto(e) {
+    const file = e.target.files[0];
+    console.log(file);
+  }
+
   function handleBio(e) {
 
     const input = e.target.value.trimStart().replace(/(\r\n|\n|\r)/gm, "");
@@ -64,7 +69,7 @@ function Signup() {
         name: name,
         bio: bio,
         private: privateMode,
-        pfp: '',
+        pfp: '',  
         banner: '',
         followers: [],
         following: [],
@@ -79,6 +84,8 @@ function Signup() {
       <input type="text" id="id" onChange={(e) => handleId(e)}></input>
       <label htmlFor="name">Username</label>
       <input type="text" id="name" onChange={(e) => handleName(e)}></input>
+      <label for="pfp">Profile Photo</label>
+      <input id="pfp" type="file" onChange={(e) => handlePhoto(e)}/>
       <label htmlFor="bio">Bio - write a bit about yourself!</label>
       <textarea id="bio" rows="4" cols="50" onKeyUp={(e) => handleBio(e)}></textarea>
       <span>Private Mode (Only you and your followers can see your posts)</span>
