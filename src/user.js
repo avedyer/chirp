@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-function User(props) {
+function User() {
 
   const location = useLocation();
   const user = location.state.user;

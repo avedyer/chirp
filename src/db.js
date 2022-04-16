@@ -1,6 +1,7 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore"
 import { initializeApp } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
+import { getStorage, getDownloadURL, ref, listAll, uploadBytes, getMetadata } from "firebase/storage";
 
 const db = (() => {
 
@@ -16,6 +17,8 @@ const db = (() => {
   
   const app = initializeApp(firebaseConfig);
   const firestore = getFirestore(app);
+
+  const storage = getStorage()
 
   async function setPost(data) {
     const post = {...data};
@@ -38,6 +41,27 @@ const db = (() => {
   function setUser(data) {
     const user = {...data};
     setDoc(doc(firestore, 'users', user.id), user)
+  }
+
+  async function getPfpList() {
+    const pfpRef = ref(storage, 'pfp');
+    return await listAll(pfpRef);
+  }
+
+  async function getPfpUrl(id, ext) {
+    const pfpRef = ref(storage, `pfp/${id}.${ext ? ext : 'jpg'}`);
+    try {
+      const url = await getDownloadURL(pfpRef);
+      return url
+    }
+    catch (err) {
+      throw(err)
+    }
+  }
+
+  async function setPfp(file, id) {
+    const pfpPath = ref(storage, `pfp/${id}.jpg`);
+    uploadBytes(pfpPath, file)
   }
 
 
@@ -85,12 +109,19 @@ const db = (() => {
       })
     }
 
-    return postList
+    else {
+      return postList
+    }
+
+    return trimPostList
   }
   
   return {
     setPost,
     setUser,
+    setPfp,
+    getPfpList,
+    getPfpUrl,
     getUsers,
     getPosts,
   }

@@ -8,6 +8,7 @@ function Post(props) {
   const navigate = useNavigate()
 
   const [user, setUser] = useState();
+  const [pfp, setPfp] = useState();
 
   useEffect(() => {
     async function fetchUser() {
@@ -18,6 +19,22 @@ function Post(props) {
       fetchUser()
     }
   }, [])
+
+  useEffect(() => {
+    async function fetchPfp() {
+      try {
+        const url = await db.getPfpUrl(user.pfp);
+        setPfp(url)
+      }
+      catch(err) {
+        const url = await db.getPfpUrl('default-user', 'png');
+        setPfp(url)
+      }
+    }
+    if(user && !pfp) {
+      fetchPfp()
+    }
+  }, [user])
 
   function navigateToUser() {
     console.log('navigating')
@@ -34,7 +51,7 @@ function Post(props) {
 
     <div className="post">
       <div className="sidebar">
-        <img className="pfp" src=''></img>
+        <img className="pfp" src={pfp}></img>
       </div>
       <div className="content">
         <div className="topline">

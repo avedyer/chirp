@@ -1,6 +1,8 @@
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react";
 
+import { getMetadata } from "firebase/storage";
+
 import db from './db'
 
 function Signup() {
@@ -13,6 +15,7 @@ function Signup() {
   const [validId, setValidId] = useState(false);
   const [validName, setValidName] = useState(false)
   const [privateMode, setPrivateMode] = useState(false);
+  const [pfpId, setPfpId] = useState()
 
   async function handleId(e) {
 
@@ -47,9 +50,27 @@ function Signup() {
     setValidName(input.length > 0 && input.length < 64)
   }
 
-  function handlePhoto(e) {
+  async function handlePhoto(e) {
     const file = e.target.files[0];
-    console.log(file);
+
+    const pfpList = await db.getPfpList();
+    
+    let prevIds = []
+
+    pfpList.items.forEach(async (pfp) => {
+      const metadata = await getMetadata(pfp);
+      prevIds.push(metadata.name.split('.')[0]);
+    })
+
+    let id = Math.floor(Math.random() * (10**12)).toString()
+
+    while(prevIds.includes(id)) {
+      id = Math.floor(Math.random * (10**12)).toString()
+    }
+
+    setPfpId(id)
+
+    db.setPfp(file, id)
   }
 
   function handleBio(e) {
@@ -69,7 +90,7 @@ function Signup() {
         name: name,
         bio: bio,
         private: privateMode,
-        pfp: '',  
+        pfp: pfpId,  
         banner: '',
         followers: [],
         following: [],
@@ -84,7 +105,7 @@ function Signup() {
       <input type="text" id="id" onChange={(e) => handleId(e)}></input>
       <label htmlFor="name">Username</label>
       <input type="text" id="name" onChange={(e) => handleName(e)}></input>
-      <label for="pfp">Profile Photo</label>
+      <label htmlFor="pfp">Profile Photo</label>
       <input id="pfp" type="file" onChange={(e) => handlePhoto(e)}/>
       <label htmlFor="bio">Bio - write a bit about yourself!</label>
       <textarea id="bio" rows="4" cols="50" onKeyUp={(e) => handleBio(e)}></textarea>
