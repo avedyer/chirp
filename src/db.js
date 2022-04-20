@@ -1,7 +1,8 @@
-import { collection, getDocs, getFirestore } from "firebase/firestore"
+import { collection, getDocs, getFirestore, updateDoc } from "firebase/firestore"
 import { initializeApp } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
 import { getStorage, getDownloadURL, ref, listAll, uploadBytes, getMetadata } from "firebase/storage";
+import { set, update } from "firebase/database";
 
 const db = (() => {
 
@@ -115,6 +116,26 @@ const db = (() => {
 
     return trimPostList
   }
+
+  async function setLike(user, post) {
+    let likes = user.likes;
+    const index = likes.indexOf(post.id);
+    if (index != -1) {
+      likes.splice(index, 1);
+    }
+    else {
+      likes.push(post.id);
+    }
+    console.log(likes);
+
+    const userRef = doc(firestore, 'users', user.id);
+
+    console.log(userRef)
+
+    await updateDoc(userRef, {
+      likes: likes
+    })
+  }
   
   return {
     setPost,
@@ -124,6 +145,7 @@ const db = (() => {
     getPfpUrl,
     getUsers,
     getPosts,
+    setLike,
   }
 
 })()

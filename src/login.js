@@ -47,8 +47,6 @@ function Login(props) {
 
   async function redirect() {
     const userList = (await db.getUsers({email: user.email}))
-    console.log(userList)
-    console.log(user.email)
     if(userList.length === 0) {
       navigate('/signup', {
         state: {

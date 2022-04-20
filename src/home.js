@@ -18,8 +18,8 @@ function Home() {
   return (
     <div className="home">
       <Login passUser={fetchUser}/>
-      <PostForm user={user ? user.id : null} />
-      <Feed />
+      <PostForm user={user ? user : null} />
+      <Feed user={user ? user : null}/>
     </div>
   )
 }

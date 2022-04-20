@@ -11,23 +11,25 @@ function Post(props) {
 
   const navigate = useNavigate()
 
-  const [user, setUser] = useState();
+  console.log(props.user.likes)
+
+  const [author, setAuthor] = useState();
   const [pfp, setPfp] = useState();
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchAuthor() {
       const userList = await db.getUsers({id: props.post.user});
-      setUser(userList[0])
+      setAuthor(userList[0])
     }
-    if (!user) {
-      fetchUser()
+    if (!author) {
+      fetchAuthor()
     }
   }, [])
 
   useEffect(() => {
     async function fetchPfp() {
       try {
-        const url = await db.getPfpUrl(user.pfp);
+        const url = await db.getPfpUrl(author.pfp);
         setPfp(url)
       }
       catch(err) {
@@ -35,23 +37,27 @@ function Post(props) {
         setPfp(url)
       }
     }
-    if(user && !pfp) {
+    if(author && !pfp) {
       fetchPfp()
     }
-  }, [user])
+  }, [author])
 
   function navigateToUser() {
     console.log('navigating')
     navigate(`/user/${props.post.user}`, {
       state: {
-        user: user
+        user: author
       }
     })
   }
 
+  function handleLike() {
+    db.setLike(props.user, props.post)
+  }
+
   return(
     
-    user ?
+    author ?
 
     <div className="post">
       <div className="sidebar">
@@ -60,7 +66,7 @@ function Post(props) {
       <div className="content">
         <div className="topline">
           <div className="info">
-            <span className="name" onClick={() => navigateToUser()}>{user.name}</span>
+            <span className="name" onClick={() => navigateToUser()}>{author.name}</span>
             <span className="handle" onClick={() => navigateToUser()}>@{props.post.user}</span>
             <span className="time"></span>
           </div>
@@ -71,15 +77,22 @@ function Post(props) {
         </div>
         <div className="metrics">
           <div className="like">
-          <LikeIcon />
+            <LikeIcon 
+              className={props.user ? 
+                props.user.likes.includes(props.post.id) ? 'liked' : ''
+                :
+                ''
+              }
+              onClick={handleLike}
+            />
             <span>{props.post.likes}</span>
           </div>
           <div className="reply">
-           <ReplyIcon />
+            <ReplyIcon/>
             <span>{props.post.replies.length}</span>
           </div>
-          {props.user ? 
-          <div className="reply">
+          {props.ownUserFeed ? 
+          <div className="options">
             <OptionsIcon />
           </div>
           :

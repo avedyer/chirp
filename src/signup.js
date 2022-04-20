@@ -94,6 +94,7 @@ function Signup() {
         banner: '',
         followers: [],
         following: [],
+        likes: []
       }
       db.setUser(user);
     }

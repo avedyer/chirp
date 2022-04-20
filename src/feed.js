@@ -6,7 +6,7 @@ import Post from './post';
 
 import db from './db'
 
-function Feed() {
+function Feed(props) {
 
   const [posts, setPosts] = useState([]);
 
@@ -25,7 +25,7 @@ function Feed() {
     <div className='feed'>
       {posts.length > 0 ? 
         posts.map((post) => {
-          return <Post post={post} key={post.id}/>
+          return <Post post={post} key={post.id} user={props.user}/>
         })
         :
         'loading...'

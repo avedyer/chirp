@@ -30,7 +30,7 @@ function PostForm(props) {
   function buildPost() {
     const post =  {
       time: new Date(),
-      user: props.user,
+      user: props.user.id,
       text: text,
       likes: 0,
       reposts: 0,

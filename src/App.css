@@ -11,3 +11,7 @@
   fill: grey;
   object-fit: cover;
 }
+
+.metrics svg .liked {
+  fill: red;
+}
