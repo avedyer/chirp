@@ -3,3 +3,11 @@
   height: 82px;
   border-radius: 50%;
 }
+
+.metrics svg {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  fill: grey;
+  object-fit: cover;
+}

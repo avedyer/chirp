@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { ReactComponent as ReplyIcon } from './imgs/reply.svg'
+import { ReactComponent as LikeIcon } from './imgs/like.svg'
+import { ReactComponent as OptionsIcon } from './imgs/options.svg'
+
 import db from './db'
 
 function Post(props) {
@@ -66,9 +70,21 @@ function Post(props) {
           <p>{props.post.text}</p>
         </div>
         <div className="metrics">
-          <div className="reply"></div>
-          <div className="repost"></div>
-          <div className="like"></div>
+          <div className="like">
+          <LikeIcon />
+            <span>{props.post.likes}</span>
+          </div>
+          <div className="reply">
+           <ReplyIcon />
+            <span>{props.post.replies.length}</span>
+          </div>
+          {props.user ? 
+          <div className="reply">
+            <OptionsIcon />
+          </div>
+          :
+          ''
+          }
         </div>
       </div>
     </div>
