@@ -16,6 +16,7 @@ function Login(props) {
         props.passUser(user);
       })
     }
+    props.passUser(null)
   }, [user])
 
   async function signIn() {

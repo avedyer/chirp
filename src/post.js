@@ -9,12 +9,21 @@ import db from './db'
 
 function Post(props) {
 
-  const navigate = useNavigate()
-
-  console.log(props.user.likes)
+  const navigate = useNavigate()  
 
   const [author, setAuthor] = useState();
   const [pfp, setPfp] = useState();
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(props.post.likes)
+
+  useEffect(() => {
+    if (props.user) {
+      setLiked(props.user.likes.includes(props.post.id))
+    }
+    else {
+      setLiked(false)
+    }
+  })
 
   useEffect(() => {
     async function fetchAuthor() {
@@ -43,7 +52,6 @@ function Post(props) {
   }, [author])
 
   function navigateToUser() {
-    console.log('navigating')
     navigate(`/user/${props.post.user}`, {
       state: {
         user: author
@@ -51,8 +59,12 @@ function Post(props) {
     })
   }
 
-  function handleLike() {
-    db.setLike(props.user, props.post)
+  async function handleLike() {
+    if (props.user) {
+      db.setLike(props.user, props.post)
+      setLiked(!liked)
+      setLikes(liked ? likes - 1 : likes + 1)
+    }
   }
 
   return(
@@ -73,19 +85,16 @@ function Post(props) {
           <div className="options"></div>
         </div>
         <div className="text">
+          <p>{props.post.id}</p>
           <p>{props.post.text}</p>
         </div>
         <div className="metrics">
           <div className="like">
             <LikeIcon 
-              className={props.user ? 
-                props.user.likes.includes(props.post.id) ? 'liked' : ''
-                :
-                ''
-              }
+              className={liked ? 'liked' : ''}
               onClick={handleLike}
             />
-            <span>{props.post.likes}</span>
+            <span>{likes}</span>
           </div>
           <div className="reply">
             <ReplyIcon/>

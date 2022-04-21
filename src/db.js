@@ -1,4 +1,4 @@
-import { collection, getDocs, getFirestore, updateDoc } from "firebase/firestore"
+import { collection, FieldValue, getDocs, getFirestore, increment, updateDoc } from "firebase/firestore"
 import { initializeApp } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
 import { getStorage, getDownloadURL, ref, listAll, uploadBytes, getMetadata } from "firebase/storage";
@@ -21,6 +21,7 @@ const db = (() => {
 
   const storage = getStorage()
 
+
   async function setPost(data) {
     const post = {...data};
 
@@ -33,7 +34,7 @@ const db = (() => {
       newId = Math.floor(Math.random * (10**12)).toString()
     }
 
-    post.id = newId;
+    post.id = newId.toString();
     
     setDoc(doc(firestore, 'posts', post.id), post)
   }
@@ -118,23 +119,34 @@ const db = (() => {
   }
 
   async function setLike(user, post) {
+
     let likes = user.likes;
+
     const index = likes.indexOf(post.id);
-    if (index != -1) {
+
+    let diff = 0
+
+    if (index !== -1) {
       likes.splice(index, 1);
+      diff--
     }
     else {
       likes.push(post.id);
+      diff++
     }
-    console.log(likes);
 
     const userRef = doc(firestore, 'users', user.id);
-
-    console.log(userRef)
 
     await updateDoc(userRef, {
       likes: likes
     })
+
+    const postRef = doc(firestore, 'posts', post.id)
+
+    await updateDoc(postRef, {
+      likes: increment(diff)
+    })
+    
   }
   
   return {

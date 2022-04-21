@@ -11,8 +11,13 @@ function Home() {
   const [user, setUser] = useState()
 
   async function fetchUser(login) {
-    const userList = (await db.getUsers({email: login.email}))
-    setUser(userList[0]);
+    if(login) {
+      const userList = (await db.getUsers({email: login.email}))
+      setUser(userList[0]);
+    }
+    else {
+      setUser(null)
+    }
   }
 
   return (

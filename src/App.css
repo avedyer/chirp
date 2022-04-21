@@ -12,6 +12,6 @@
   object-fit: cover;
 }
 
-.metrics svg .liked {
+.metrics svg.liked {
   fill: red;
 }

@@ -90,7 +90,7 @@ function Signup() {
         name: name,
         bio: bio,
         private: privateMode,
-        pfp: pfpId,  
+        pfp: pfpId ? pfpId : null,  
         banner: '',
         followers: [],
         following: [],
