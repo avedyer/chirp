@@ -73,9 +73,8 @@ const db = (() => {
     const userSnapshot = await getDocs(userCollection);
     const userList = userSnapshot.docs.map(doc => doc.data())
 
-    let trimUserList = []
-
     if (params) {
+      let trimUserList = []
       Object.keys(params).forEach((param) => {
         if (Object.keys(userList[0]).includes(param)) {
           userList.forEach((user) => {
@@ -85,9 +84,10 @@ const db = (() => {
           })
         }
       })
+      return trimUserList
     }
+    return userList
 
-    return trimUserList
   }
 
 

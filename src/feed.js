@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import placeholders from './placeholders';
 import Post from './post';
 
 import db from './db'
