@@ -88,26 +88,34 @@ function Post(props) {
           <p>{props.post.id}</p>
           <p>{props.post.text}</p>
         </div>
-        <div className="metrics">
-          <div className="like">
-            <LikeIcon 
-              className={liked ? 'liked' : ''}
-              onClick={handleLike}
-            />
-            <span>{likes}</span>
+        { props.replying ? 
+
+          ''
+        :
+
+          <div className="metrics">
+            <div className="like">
+              <LikeIcon 
+                className={liked ? 'liked' : ''}
+                onClick={() => handleLike}
+              />
+              <span>{likes}</span>
+            </div>
+            <div className="reply">
+              <ReplyIcon onClick={() => props.passReply(props.post)}/>
+              <span>{props.post.replies.length}</span>
+            </div>
+            {props.ownUserFeed ? 
+            <div className="options">
+              <OptionsIcon />
           </div>
-          <div className="reply">
-            <ReplyIcon/>
-            <span>{props.post.replies.length}</span>
-          </div>
-          {props.ownUserFeed ? 
-          <div className="options">
-            <OptionsIcon />
-          </div>
-          :
+
+            :
           ''
           }
+
         </div>
+        }
       </div>
     </div>
 

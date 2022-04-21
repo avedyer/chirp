@@ -1,3 +1,8 @@
+.home {
+  position: relative;
+  z-index: 1;
+}
+
 input {
   outline: none;
 }
@@ -24,4 +29,30 @@ input {
 
 input.invalid {
   border: 1px solid red;
+}
+
+
+/* REPLY */
+
+.popup {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 30%);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+}
+
+.reply-form {
+  width: 700px;
+  height: 700px;
+  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

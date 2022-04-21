@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import Post from './post';
+import ReplyForm from './replyForm';
 
 import db from './db'
 
 function Feed(props) {
 
   const [posts, setPosts] = useState([]);
+  const [replyThread, setReplyThread] = useState()
 
   useEffect(() => {
     async function fetchPosts() {
@@ -19,16 +21,16 @@ function Feed(props) {
     }
   }, [])
 
-
   return (
     <div className='feed'>
       {posts.length > 0 ? 
         posts.map((post) => {
-          return <Post post={post} key={post.id} user={props.user}/>
+          return <Post post={post} key={post.id} user={props.user} passReply={setReplyThread}/>
         })
         :
         'loading...'
       }
+      {replyThread ? <ReplyForm thread={replyThread}/> : ''}
     </div>
   )
 }
