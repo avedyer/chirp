@@ -7,7 +7,7 @@ function ReplyForm(props) {
     <div className="popup">
       <div className="reply-form">
         <Post post={props.thread} replying={true}/>
-        <PostForm />
+        <PostForm user={props.user} replyTo={props.thread}/>
       </div>
     </div>
   )

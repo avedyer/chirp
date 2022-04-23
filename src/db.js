@@ -148,6 +148,14 @@ const db = (() => {
     })
     
   }
+
+  async function addReply(thread, reply) {
+    const threadRef = doc(firestore, 'posts', thread.id);
+
+    await updateDoc(threadRef, {
+      replies: FieldValue.arrayUnion(reply.id)
+    })
+  }
   
   return {
     setPost,
@@ -158,6 +166,7 @@ const db = (() => {
     getUsers,
     getPosts,
     setLike,
+    addReply
   }
 
 })()

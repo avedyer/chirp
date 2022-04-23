@@ -30,7 +30,7 @@ function Feed(props) {
         :
         'loading...'
       }
-      {replyThread ? <ReplyForm thread={replyThread}/> : ''}
+      {replyThread ? <ReplyForm user={props.user} thread={replyThread}/> : ''}
     </div>
   )
 }
