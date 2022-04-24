@@ -13,7 +13,7 @@ function Feed(props) {
 
   useEffect(() => {
     async function fetchPosts() {
-      const postList = await db.getPosts();
+      const postList = await db.getPosts(props.params);
       setPosts([...postList])
     }
     if (posts.length === 0) {
@@ -30,7 +30,7 @@ function Feed(props) {
         :
         'loading...'
       }
-      {replyThread ? <ReplyForm user={props.user} thread={replyThread}/> : ''}
+      {replyThread ? <ReplyForm user={props.user} thread={replyThread} closeReply={() => setReplyThread(null)}/> : ''}
     </div>
   )
 }

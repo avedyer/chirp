@@ -25,10 +25,6 @@ function PostForm(props) {
       db.setPost(buildPost())
       setSent(true)
     }
-
-    if(props.replyTo) {
-      db.addReply(props.replyTo, buildPost());
-    }
   }
 
   function buildPost() {
@@ -39,7 +35,7 @@ function PostForm(props) {
       likes: 0,
       reposts: 0,
       replies: [],
-      ReplyTo: props.replyTo ? props.replyTo.id : null
+      replyTo: props.replyTo ? props.replyTo.id : null
     }
     return post
   }

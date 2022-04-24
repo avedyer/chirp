@@ -6,6 +6,7 @@ import './App.css';
 import Home from "./home";
 import User from "./user";
 import Signup from "./signup";
+import Thread from "./thread";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}/>
           <Route exact path='/user/:id' element={<User />}/>
+          <Route exact path='/thread/:id' element={<Thread />} />
           <Route path='/signup' element={<Signup />} />
         </Routes>
       </BrowserRouter>

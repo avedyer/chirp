@@ -1,4 +1,4 @@
-import { collection, FieldValue, getDocs, getFirestore, increment, updateDoc } from "firebase/firestore"
+import { collection, arrayUnion, getDocs, getFirestore, increment, updateDoc } from "firebase/firestore"
 import { initializeApp } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
 import { getStorage, getDownloadURL, ref, listAll, uploadBytes, getMetadata } from "firebase/storage";
@@ -37,6 +37,10 @@ const db = (() => {
     post.id = newId.toString();
     
     setDoc(doc(firestore, 'posts', post.id), post)
+
+    if (post.replyTo) {
+      addReply(post.replyTo, post)
+    }
   }
 
 
@@ -101,7 +105,7 @@ const db = (() => {
 
     if (params) {
       Object.keys(params).forEach((param) => {
-        if (Object.keys(postList).includes(param)) {
+        if (Object.keys(postList[0]).includes(param)) {
           postList.forEach((post) => {
             if (post[param] === params[param]) {
               trimPostList.push(post)
@@ -114,7 +118,6 @@ const db = (() => {
     else {
       return postList
     }
-
     return trimPostList
   }
 
@@ -150,10 +153,10 @@ const db = (() => {
   }
 
   async function addReply(thread, reply) {
-    const threadRef = doc(firestore, 'posts', thread.id);
+    const threadRef = doc(firestore, 'posts', thread);
 
     await updateDoc(threadRef, {
-      replies: FieldValue.arrayUnion(reply.id)
+      replies: arrayUnion(reply.id)
     })
   }
   

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { ReactComponent as ReplyIcon } from './imgs/reply.svg'
 import { ReactComponent as LikeIcon } from './imgs/like.svg'
@@ -95,28 +96,44 @@ function Post(props) {
 
           <div className="metrics">
             <div className="like">
-              <LikeIcon 
+              <LikeIcon
                 className={liked ? 'liked' : ''}
                 onClick={() => handleLike}
               />
               <span>{likes}</span>
             </div>
             <div className="reply">
-              <ReplyIcon onClick={() => props.passReply(props.post)}/>
+              <ReplyIcon onClick={() => {
+                if(props.user) {
+                  props.passReply(props.post)
+                }
+              }}/>
               <span>{props.post.replies.length}</span>
             </div>
             {props.ownUserFeed ? 
             <div className="options">
               <OptionsIcon />
-          </div>
+            </div>
 
-            :
-          ''
-          }
-
+              :
+            ''
+            }
+        
         </div>
         }
       </div>
+      {
+        props.post.replies.length > 0 ?
+        <Link 
+          className="thread" 
+          to={`/thread/${props.post.id}`} 
+          state={{ 
+            post: props.post,
+            user: props.user 
+          }}>View this thread</ Link>
+        :
+        ''
+      }
     </div>
 
     :
