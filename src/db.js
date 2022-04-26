@@ -49,15 +49,21 @@ const db = (() => {
     setDoc(doc(firestore, 'users', user.id), user)
   }
 
-  async function getPfpList() {
-    const pfpRef = ref(storage, 'pfp');
-    return await listAll(pfpRef);
-  }
-
   async function getPfpUrl(id, ext) {
     const pfpRef = ref(storage, `pfp/${id}.${ext ? ext : 'jpg'}`);
     try {
       const url = await getDownloadURL(pfpRef);
+      return url
+    }
+    catch (err) {
+      throw(err)
+    }
+  }
+
+  async function getBannerUrl(id, ext) {
+    const bannerRef = ref(storage, `banner/${id}.${ext ? ext : 'jpg'}`);
+    try {
+      const url = await getDownloadURL(bannerRef);
       return url
     }
     catch (err) {
@@ -164,8 +170,8 @@ const db = (() => {
     setPost,
     setUser,
     setPfp,
-    getPfpList,
     getPfpUrl,
+    getBannerUrl,
     getUsers,
     getPosts,
     setLike,

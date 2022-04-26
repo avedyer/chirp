@@ -21,11 +21,13 @@ function Feed(props) {
     }
   }, [])
 
+  console.log(props.login)
+
   return (
     <div className='feed'>
       {posts.length > 0 ? 
         posts.map((post) => {
-          return <Post post={post} key={post.id} user={props.login} passReply={setReplyThread}/>
+          return <Post post={post} key={post.id} login={props.login} passReply={setReplyThread}/>
         })
         :
         'loading...'

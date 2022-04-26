@@ -18,8 +18,8 @@ function Post(props) {
   const [likes, setLikes] = useState(props.post.likes)
 
   useEffect(() => {
-    if (props.user) {
-      setLiked(props.user.likes.includes(props.post.id))
+    if (props.login) {
+      setLiked(props.login.likes.includes(props.post.id))
     }
     else {
       setLiked(false)
@@ -61,8 +61,8 @@ function Post(props) {
   }
 
   async function handleLike() {
-    if (props.user) {
-      db.setLike(props.user, props.post)
+    if (props.login) {
+      db.setLike(props.login, props.post)
       setLiked(!liked)
       setLikes(liked ? likes - 1 : likes + 1)
     }
@@ -98,13 +98,13 @@ function Post(props) {
             <div className="like">
               <LikeIcon
                 className={liked ? 'liked' : ''}
-                onClick={() => handleLike}
+                onClick={() => handleLike()}
               />
               <span>{likes}</span>
             </div>
             <div className="reply">
               <ReplyIcon onClick={() => {
-                if(props.user) {
+                if(props.login) {
                   props.passReply(props.post)
                 }
               }}/>
@@ -129,7 +129,7 @@ function Post(props) {
           to={`/thread/${props.post.id}`} 
           state={{ 
             post: props.post,
-            user: props.user 
+            user: props.login 
           }}>View this thread</ Link>
         :
         ''

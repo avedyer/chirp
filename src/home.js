@@ -11,8 +11,8 @@ function Home(props) {
   return (
     <div className="home">
       <Login passLogin={props.passLogin}/>
-      <PostForm login={login} />
-      <Feed login={login}/>
+      <PostForm login={props.login} />
+      <Feed login={props.login}/>
     </div>
   )
 }

@@ -22,7 +22,9 @@ function App() {
       setLogin(userList[0]);
     }
     else {
-      setLogin(localStorage.getItem('login'))
+      const storedLogin = JSON.parse(localStorage.getItem('login'));
+      const userList = (await db.getUsers({email: storedLogin.email}));
+      setLogin(userList[0])
     }
   }
 
