@@ -133,7 +133,7 @@ function Signup() {
       </div>
       <div id="pfp">
         <label htmlFor="pfp">Profile Photo</label>
-        <input id type="file" onChange={(e) => handlePhoto(e)}/>
+        <input type="file" onChange={(e) => handlePhoto(e)}/>
       </div>
       <div id="bio">
         <label htmlFor="bio">Bio - write a bit about yourself!</label>

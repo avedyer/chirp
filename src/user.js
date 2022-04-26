@@ -3,13 +3,19 @@ import { useEffect, useState } from 'react';
 
 import db from './db'
 
-function User() {
+function User(props) {
 
   const location = useLocation();
   const user = location.state.user;
 
   const [pfp, setPfp] = useState()
   const [banner, setBanner] = useState()
+  const [isLogin, setIsLogin] = useState(() => {
+    if (props.login){
+      return user.email === props.login.email
+    }
+    return false
+  })
 
   useEffect(() => {
 
@@ -46,7 +52,15 @@ function User() {
   return(
     <div className="user">
       <div className='banner'>
-        <img src={banner} />
+        <label htmlFor='bannerInput'>
+          <img src={banner} />
+        </label>
+        {
+          isLogin ?
+            <input id="bannerInput" type="file" style={{display: 'none'}}/>
+          :
+            ''
+        }
       </div>
       <div className="info">
         <h1>{user.name}</h1>

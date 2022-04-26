@@ -33,7 +33,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home login={login} passLogin={fetchLoginProfile}/>}/>
-          <Route exact path='/user/:id' element={<User />}/>
+          <Route exact path='/user/:id' element={<User login={login}/>}/>
           <Route exact path='/thread/:id' element={<Thread />} />
           <Route path='/signup' element={<Signup />} />
         </Routes>

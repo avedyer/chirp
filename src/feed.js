@@ -21,8 +21,6 @@ function Feed(props) {
     }
   }, [])
 
-  console.log(props.login)
-
   return (
     <div className='feed'>
       {posts.length > 0 ? 
