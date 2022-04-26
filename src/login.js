@@ -7,17 +7,17 @@ import db from "./db";
 
 function Login(props) {
 
-  const [user, setUser] = useState()
+  const [login, setLogin] = useState(JSON.parse(localStorage.getItem('login')))
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (user) {
+    if (login) {
       redirect().then(() => {
-        props.passUser(user);
+        props.passLogin(login);
       })
     }
-    props.passUser(null)
-  }, [user])
+    props.passLogin(null)
+  }, [login])
 
   async function signIn() {
     const provider = new GoogleAuthProvider();
@@ -30,8 +30,10 @@ function Login(props) {
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
+
+      localStorage.setItem('login', JSON.stringify(result.user));
       // The signed-in user info.
-      setUser(result.user);
+      setLogin(result.user);
       // ...
     }).catch((error) => {
       // Handle Errors here.
@@ -47,11 +49,11 @@ function Login(props) {
   }
 
   async function redirect() {
-    const userList = (await db.getUsers({email: user.email}))
+    const userList = (await db.getUsers({email: login.email}))
     if(userList.length === 0) {
       navigate('/signup', {
         state: {
-          email: user.email
+          email: login.email
         }
       })
     }
@@ -59,14 +61,14 @@ function Login(props) {
 
   function signOutUser() {
     signOut(getAuth())
-    setUser(null)
+    setLogin(null)
   }
 
   return(
     <div className="login">
-      {user ? 
+      {login ? 
         <div className="userInfo">
-          <p>Logged in as {user.email}</p>
+          <p>Logged in as {login.email}</p>
           <button onClick={() => signOutUser()}>Sign Out</button>
         </div>
         :

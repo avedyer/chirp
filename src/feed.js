@@ -25,12 +25,12 @@ function Feed(props) {
     <div className='feed'>
       {posts.length > 0 ? 
         posts.map((post) => {
-          return <Post post={post} key={post.id} user={props.user} passReply={setReplyThread}/>
+          return <Post post={post} key={post.id} user={props.login} passReply={setReplyThread}/>
         })
         :
         'loading...'
       }
-      {replyThread ? <ReplyForm user={props.user} thread={replyThread} closeReply={() => setReplyThread(null)}/> : ''}
+      {replyThread ? <ReplyForm login={props.login} thread={replyThread} closeReply={() => setReplyThread(null)}/> : ''}
     </div>
   )
 }

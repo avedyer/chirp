@@ -2,29 +2,17 @@ import Feed from "./feed"
 import PostForm from "./postForm"
 import Login from "./login";
 
-import db from "./db";
-
 import { useEffect, useState } from "react";
 
-function Home() {
+function Home(props) {
 
-  const [user, setUser] = useState()
-
-  async function fetchUser(login) {
-    if(login) {
-      const userList = (await db.getUsers({email: login.email}))
-      setUser(userList[0]);
-    }
-    else {
-      setUser(null)
-    }
-  }
+  const [login, setLogin] = useState(props.login)
 
   return (
     <div className="home">
-      <Login passUser={fetchUser}/>
-      <PostForm user={user ? user : null} />
-      <Feed user={user ? user : null}/>
+      <Login passLogin={props.passLogin}/>
+      <PostForm login={login} />
+      <Feed login={login}/>
     </div>
   )
 }

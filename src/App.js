@@ -8,13 +8,29 @@ import User from "./user";
 import Signup from "./signup";
 import Thread from "./thread";
 
+import db from "./db";
+
+import { useEffect, useState } from "react";
+
 function App() {
+
+  const [login, setLogin] = useState()
+
+  async function fetchLoginProfile(login) {
+    if(login) {
+      const userList = (await db.getUsers({email: login.email}))
+      setLogin(userList[0]);
+    }
+    else {
+      setLogin(localStorage.getItem('login'))
+    }
+  }
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />}/>
+          <Route path='/' element={<Home login={login} passLogin={fetchLoginProfile}/>}/>
           <Route exact path='/user/:id' element={<User />}/>
           <Route exact path='/thread/:id' element={<Thread />} />
           <Route path='/signup' element={<Signup />} />
