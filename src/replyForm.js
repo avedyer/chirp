@@ -8,7 +8,7 @@ function ReplyForm(props) {
       <div className="reply-form">
         <Post post={props.thread} replying={true}/>
         <button onClick={props.closeReply}>X</button>
-        <PostForm user={props.login} replyTo={props.thread}/>
+        <PostForm login={props.login} replyTo={props.thread}/>
       </div>
     </div>
   )

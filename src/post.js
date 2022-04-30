@@ -123,14 +123,15 @@ function Post(props) {
         }
       </div>
       {
-        props.post.replies.length > 0 ?
+        props.post.replies.length > 0 && !props.inThread && !props.replying ?
         <Link 
           className="thread" 
           to={`/thread/${props.post.id}`} 
           state={{ 
             post: props.post,
-            user: props.login 
-          }}>View this thread</ Link>
+            login: props.login 
+          }}>View this thread
+        </ Link>
         :
         ''
       }

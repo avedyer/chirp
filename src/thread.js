@@ -4,14 +4,16 @@ import db from './db';
 
 import Feed from "./feed"
 import Post from "./post"
+import ReplyForm from './replyForm';
 
 function Thread() {
 
   const location = useLocation();
-  const user = location.state.user;
+  const login = location.state.login;
   const post = location.state.post;
 
   const [replies, setReplies] = useState([])
+  const [replyThread, setReplyThread] = useState()
 
   useEffect(() => {
     async function fetchReplies() {
@@ -29,18 +31,19 @@ function Thread() {
 
   return (
     <div className="thread">
-      <Post post={post} key={post.id} user={user} />
+      <Post post={post} key={post.id} login={login} inThread={true} passReply={setReplyThread}/>
       {
         replies.length > 0 ?
         replies.map((reply) => {
           return reply ? 
-            <Post post={reply} key={reply.id} user={user}/>
+            <Post post={reply} key={reply.id} login={login} passReply={setReplyThread}/>
               :
             'loading...'
         })
           :
         'loading...'
       }
+      {replyThread ? <ReplyForm login={login} thread={replyThread} closeReply={() => setReplyThread(null)}/> : ''}
     </div>
   )
 }
