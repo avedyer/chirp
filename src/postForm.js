@@ -12,12 +12,7 @@ function PostForm(props) {
 
   function handleInput(input) {
     setText(input)
-    if (input.length > 280) {
-      setOverflow(true)
-    }
-    else {
-      setOverflow(false)
-    }
+    setOverflow(input.length > 280)
   }
 
   function handleSubmit() {

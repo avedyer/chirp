@@ -165,6 +165,41 @@ const db = (() => {
       replies: arrayUnion(reply.id)
     })
   }
+
+  async function toggleFollow(user, follower) {
+
+    let followerList = user.followers;
+    let followingList = follower.following
+
+    const followerIndex = followerList.indexOf(follower.id);
+
+    if (followerIndex !== -1) {
+      followerList.splice(followerIndex, 1);
+    }
+    else {
+      followerList.push(follower.id);
+    }
+
+    const followingIndex = followingList.indexOf(user.id);
+
+    if (followingIndex !== -1) {
+      followingList.splice(followingIndex, 1);
+    }
+    else {
+      followingList.push(user.id)
+    }
+
+    const userRef = doc(firestore, 'users', user.id);
+    const followerRef = doc(firestore, 'users', follower.id)
+
+    await updateDoc(userRef, {
+      followers: followerList
+    })
+
+    await updateDoc(followerRef, {
+      following: followingList
+    })
+  }
   
   return {
     setPost,
@@ -175,7 +210,8 @@ const db = (() => {
     getUsers,
     getPosts,
     setLike,
-    addReply
+    addReply,
+    toggleFollow
   }
 
 })()

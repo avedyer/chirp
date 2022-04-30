@@ -12,6 +12,7 @@ function Signup() {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [bio ,setBio] = useState('')
+  const [bioOverflow, setBioOverflow] = useState(false)
   const [validId, setValidId] = useState(false);
   const [uniqueId, setUniqueId] = useState(true)
   const [validName, setValidName] = useState(false)
@@ -22,14 +23,12 @@ function Signup() {
   useEffect(() => {
     if (id) {
       if (id.length < 4 || id.length > 16) {
-        console.log('length fail')
         setIdMessage('ID must be between 4 and 16 characters.')
       }
       else if(!(/^[a-zA-Z0-9_-]*$/.test(id))) {
         setIdMessage('ID must only contain letters, numbers, dashes and underscores')
       }
       else if(!uniqueId) {
-        console.log('unique fail')
         setIdMessage('Sorry, this ID is taken.')
       }
       else {
@@ -99,10 +98,11 @@ function Signup() {
 
     setBio(input)
 
+    setBioOverflow(input.length > 280)
   }
 
   function handleSubmit() {
-    if (validId && validName) {
+    if (validId && validName && !bioOverflow) {
       const user = {
         email: location.state.email,
         id: id,
@@ -138,6 +138,7 @@ function Signup() {
       <div id="bio">
         <label htmlFor="bio">Bio - write a bit about yourself!</label>
         <textarea id rows="4" cols="50" onKeyUp={(e) => handleBio(e)}></textarea>
+        <span className={bioOverflow ? 'overflow' : ''}>{bio.length}/280</span>
       </div>
       <div id="private">
         <span>Private Mode (Only you and your followers can see your posts)</span>

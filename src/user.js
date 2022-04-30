@@ -7,6 +7,7 @@ function User(props) {
 
   const location = useLocation();
   const user = location.state.user;
+  const login = location.state.login;
 
   const [pfp, setPfp] = useState()
   const [banner, setBanner] = useState()
@@ -16,6 +17,7 @@ function User(props) {
     }
     return false
   })
+  const [following, setFollowing] = useState(login.following.includes(user.id))
 
   useEffect(() => {
 
@@ -49,6 +51,11 @@ function User(props) {
     }
   }, [user])
 
+  function handleFollow() {
+    setFollowing(!following)
+    db.toggleFollow(user, login)
+  }
+
   return(
     <div className="user">
       <div className='banner'>
@@ -66,6 +73,7 @@ function User(props) {
         <h1>{user.name}</h1>
         <h2>{user.id}</h2>
       </div>
+      <button onClick={handleFollow}>{following ? 'Following' : 'Follow'}</button>
     </div>
   )
 }

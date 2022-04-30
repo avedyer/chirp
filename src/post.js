@@ -55,7 +55,8 @@ function Post(props) {
   function navigateToUser() {
     navigate(`/user/${props.post.user}`, {
       state: {
-        user: author
+        user: author,
+        login: props.login
       }
     })
   }
