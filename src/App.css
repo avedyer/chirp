@@ -25,6 +25,12 @@ input {
   fill: red;
 }
 
+/* POST FORM */
+
+.overflow {
+  color: red;
+}
+
 /* SIGNUP */
 
 input.invalid {

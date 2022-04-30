@@ -4,24 +4,24 @@ import db from './db'
 
 function PostForm(props) {
 
-  const [text, setText] = useState()
+  const [text, setText] = useState('')
   const [overflow, setOverflow] = useState(false)
   const [sent, setSent] = useState(false)
 
 
 
   function handleInput(input) {
-    setSent(false)
-    if (input.length < 280) {
-      setText(input);
+    setText(input)
+    if (input.length > 280) {
+      setOverflow(true)
     }
     else {
-      setOverflow(true)
+      setOverflow(false)
     }
   }
 
   function handleSubmit() {
-    if(text && !sent) {
+    if(!overflow && text.length > 0 && !sent) {
       db.setPost(buildPost())
       setSent(true)
     }
@@ -44,6 +44,7 @@ function PostForm(props) {
   return(
     <div className="post-form">
       <textarea rows="4" cols="50" onChange={(e) => handleInput(e.target.value)}></textarea>
+      <span className={overflow ? 'overflow' : ''}>{text.length}/280</span>
       <button onClick={handleSubmit}>Submit</button>
       <span>{sent ? 'Posted!' : ''}</span>
     </div>
