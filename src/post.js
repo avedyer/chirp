@@ -131,7 +131,8 @@ function Post(props) {
           state={{ 
             post: props.post,
             login: props.login 
-          }}>View this thread
+        }}>
+          View this thread
         </ Link>
         :
         ''

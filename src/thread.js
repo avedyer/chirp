@@ -8,13 +8,26 @@ import ReplyForm from './replyForm';
 
 function Thread() {
 
-  const location = useLocation();
-  const login = location.state.login;
-  const post = location.state.post;
-
   const [replies, setReplies] = useState([])
   const [replyThread, setReplyThread] = useState()
+  const [post, setPost] = useState()
+  const [login, setLogin] = useState()
 
+  const location = useLocation();
+
+  async function getInfoByUrl() {
+    const url = window.location.href
+    const exts = url.split('/')
+    const id = exts[exts.length - 1]
+
+    const postArray = await db.getPosts({id: id});
+    setPost(postArray[0])
+
+    const storedLogin = JSON.parse(localStorage.getItem('login'));
+    const userList = (await db.getUsers({email: storedLogin.email}));
+    setLogin(userList[0])
+  }
+ 
   useEffect(() => {
     async function fetchReplies() {
       Promise.all(post.replies.map((reply) => {
@@ -23,27 +36,48 @@ function Thread() {
         setReplies(...replyList)
       })
     }
-    if (replies.length === 0 && post.replies.length > 0) {
-      fetchReplies()
+    if (post) {
+      if (replies.length === 0 && post.replies.length > 0) {
+        fetchReplies()
+      }
+    }
+  }, [post])
+
+  useEffect(() => {
+    if (!post || !login) {
+      if (location.state) {
+        setLogin(location.state.login);
+        setPost(location.state.post);
+      }
+      else {
+        getInfoByUrl()
+      }
     }
   }, [])
 
 
   return (
     <div className="thread">
-      <Post post={post} key={post.id} login={login} inThread={true} passReply={setReplyThread}/>
       {
-        replies.length > 0 ?
-        replies.map((reply) => {
-          return reply ? 
-            <Post post={reply} key={reply.id} login={login} passReply={setReplyThread}/>
+        post ?
+        <div>
+          <Post post={post} key={post.id} login={login} inThread={true} passReply={setReplyThread}/>
+          {
+            replies.length > 0 ?
+            replies.map((reply) => {
+              return reply ? 
+                <Post post={reply} key={reply.id} login={login} passReply={setReplyThread}/>
+                  :
+                'loading...'
+            })
               :
             'loading...'
-        })
-          :
-        'loading...'
+          }
+          {replyThread ? <ReplyForm login={login} thread={replyThread} closeReply={() => setReplyThread(null)}/> : ''}
+        </div>
+        :
+          ''
       }
-      {replyThread ? <ReplyForm login={login} thread={replyThread} closeReply={() => setReplyThread(null)}/> : ''}
     </div>
   )
 }

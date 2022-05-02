@@ -12,7 +12,7 @@ function Home(props) {
     <div className="home">
       <Login passLogin={props.passLogin}/>
       <PostForm login={props.login} />
-      <Feed login={props.login}/>
+      <Feed login={props.login} params={{ReplyTo: null}}/>
     </div>
   )
 }
