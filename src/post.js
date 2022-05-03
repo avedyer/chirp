@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { ReactComponent as ReplyIcon } from './imgs/reply.svg'
 import { ReactComponent as LikeIcon } from './imgs/like.svg'
-import { ReactComponent as OptionsIcon } from './imgs/options.svg'
+import { ReactComponent as DeleteIcon } from './imgs/delete.svg'
 
 import db from './db'
 
@@ -16,6 +16,7 @@ function Post(props) {
   const [pfp, setPfp] = useState();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(props.post.likes)
+  const [deleted, setDeleted] = useState(props.post.deleted)
 
   useEffect(() => {
     if (props.login) {
@@ -69,80 +70,95 @@ function Post(props) {
     }
   }
 
-  return(
-    
-    author ?
+  function handleDelete() {
+    db.deletePost(props.post)
+    setDeleted(true);
+  }
 
-    <div className="post">
-      <div className="sidebar">
-        <img className="pfp" src={pfp}></img>
+  if (deleted) {
+    return (
+      <div className='post deleted'>
+        <p>This post has been removed.</p>
       </div>
-      <div className="content">
-        <div className="topline">
-          <div className="info">
-            <span className="name" onClick={() => navigateToUser()}>{author.name}</span>
-            <span className="handle" onClick={() => navigateToUser()}>@{props.post.user}</span>
-            <span className="time"></span>
+    )
+  }
+
+  else {
+    return(
+    
+      author ?
+  
+      <div className="post">
+        <div className="sidebar">
+          <img className="pfp" src={pfp}></img>
+        </div>
+        <div className="content">
+          <div className="topline">
+            <div className="info">
+              <span className="name" onClick={() => navigateToUser()}>{author.name}</span>
+              <span className="handle" onClick={() => navigateToUser()}>@{props.post.user}</span>
+              <span className="time"></span>
+            </div>
+            <div className="options"></div>
           </div>
-          <div className="options"></div>
-        </div>
-        <div className="text">
-          <p>{props.post.id}</p>
-          <p>{props.post.text}</p>
-        </div>
-        { props.replying ? 
-
-          ''
-        :
-
-          <div className="metrics">
-            <div className="like">
-              <LikeIcon
-                className={liked ? 'liked' : ''}
-                onClick={() => handleLike()}
-              />
-              <span>{likes}</span>
-            </div>
-            <div className="reply">
-              <ReplyIcon onClick={() => {
-                if(props.login) {
-                  props.passReply(props.post)
-                }
-              }}/>
-              <span>{props.post.replies.length}</span>
-            </div>
-            {props.ownUserFeed ? 
-            <div className="options">
-              <OptionsIcon />
-            </div>
-
-              :
+          <div className="text">
+            <p>{props.post.id}</p>
+            <p>{props.post.text}</p>
+          </div>
+          { props.replying ? 
+  
             ''
-            }
-        
+          :
+  
+            <div className="metrics">
+              <div className="like">
+                <LikeIcon
+                  className={liked ? 'liked' : ''}
+                  onClick={() => handleLike()}
+                />
+                <span>{likes}</span>
+              </div>
+              <div className="reply">
+                <ReplyIcon onClick={() => {
+                  if(props.login) {
+                    props.passReply(props.post)
+                  }
+                }}/>
+                <span>{props.post.replies.length}</span>
+              </div>
+              {props.login.id === author.id ? 
+              <div className="delete">
+                <DeleteIcon onClick={() => handleDelete()}/>
+              </div>
+  
+                :
+              ''
+              }
+          
+          </div>
+          }
         </div>
+        {
+          props.post.replies.length > 0 && !props.inThread && !props.replying ?
+          <Link 
+            className="thread" 
+            to={`/thread/${props.post.id}`} 
+            state={{ 
+              post: props.post,
+              login: props.login 
+          }}>
+            View this thread
+          </ Link>
+          :
+          ''
         }
       </div>
-      {
-        props.post.replies.length > 0 && !props.inThread && !props.replying ?
-        <Link 
-          className="thread" 
-          to={`/thread/${props.post.id}`} 
-          state={{ 
-            post: props.post,
-            login: props.login 
-        }}>
-          View this thread
-        </ Link>
-        :
-        ''
-      }
-    </div>
-
-    :
-
-    'loading...'
-  )
+  
+      :
+  
+      'loading...'
+    )
+  }
 }
 
 export default Post

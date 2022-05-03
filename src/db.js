@@ -200,6 +200,13 @@ const db = (() => {
       following: followingList
     })
   }
+
+  async function deletePost(post) {
+    const postRef = doc(firestore, 'posts', post.id);
+    await updateDoc(postRef, {
+      deleted: true
+    })
+  }
   
   return {
     setPost,
@@ -211,7 +218,8 @@ const db = (() => {
     getPosts,
     setLike,
     addReply,
-    toggleFollow
+    toggleFollow,
+    deletePost
   }
 
 })()

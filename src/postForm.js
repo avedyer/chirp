@@ -30,7 +30,8 @@ function PostForm(props) {
       likes: 0,
       reposts: 0,
       replies: [],
-      replyTo: props.replyTo ? props.replyTo.id : null
+      replyTo: props.replyTo ? props.replyTo.id : null,
+      deleted: false
     }
     return post
   }
