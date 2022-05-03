@@ -23,8 +23,24 @@ function App() {
     }
     else {
       const storedLogin = JSON.parse(localStorage.getItem('login'));
-      const userList = (await db.getUsers({email: storedLogin.email}));
-      setLogin(userList[0])
+      if (storedLogin) {
+        const userList = (await db.getUsers({email: storedLogin.email}));
+        setLogin(userList[0])
+      }
+      else {
+        setLogin({
+          email: '',
+          id: '',
+          name: '',
+          bio: '',
+          private: '',
+          pfp: '', 
+          banner: '',
+          followers: [],
+          following: [],
+          likes: []
+        })
+      }
     }
   }
 

@@ -61,6 +61,7 @@ function Login(props) {
 
   function signOutUser() {
     signOut(getAuth())
+    localStorage.removeItem('login')
     setLogin(null)
   }
 
