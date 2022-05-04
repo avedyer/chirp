@@ -2,7 +2,9 @@ import Login from "./login"
 
 function Menu(props) {
   return (
-    <Login passLogin={props.passLogin}/>
+    <div className="menu">
+      <Login passLogin={props.passLogin}/>
+    </div>
   )
 }
 

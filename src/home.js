@@ -1,6 +1,4 @@
-import Feed from "./feed"
-import PostForm from "./postForm"
-import Login from "./login";
+import Main from './main';
 import About from './about'
 import Menu from "./menu";
 
@@ -12,10 +10,7 @@ function Home(props) {
 
   return (
     <div className="home">
-      <Menu passLogin={props.passLogin}/>
-      <PostForm login={props.login} />
-      <Feed login={props.login} params={{ReplyTo: null}}/>
-      <About />
+      <Main login={props.login}/>
     </div>
   )
 }

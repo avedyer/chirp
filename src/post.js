@@ -53,26 +53,39 @@ function Post(props) {
     }
   }, [author])
 
-  function navigateToUser() {
+  function navigateToUser(e) {
     navigate(`/user/${props.post.user}`, {
       state: {
         user: author,
         login: props.login
       }
     })
+    e.stopPropagation()
   }
 
-  async function handleLike() {
+  function navigateToThread(e) {
+    navigate(`/thread/${props.post.id}`, {
+      state: { 
+        post: props.post,
+        login: props.login 
+      }
+    })
+    e.stopPropagation()
+  }
+
+  async function handleLike(e) {
     if (props.login) {
       db.setLike(props.login, props.post)
       setLiked(!liked)
       setLikes(liked ? likes - 1 : likes + 1)
     }
+    e.stopPropagation()
   }
 
-  function handleDelete() {
+  function handleDelete(e) {
     db.deletePost(props.post)
     setDeleted(true);
+    e.stopPropagation()
   }
 
   if (deleted) {
@@ -88,15 +101,15 @@ function Post(props) {
     
       author ?
   
-      <div className="post">
+      <div className="post" onClick={(e) => navigateToThread(e)}>
         <div className="sidebar">
           <img className="pfp" src={pfp}></img>
         </div>
         <div className="content">
           <div className="topline">
             <div className="info">
-              <span className="name" onClick={() => navigateToUser()}>{author.name}</span>
-              <span className="handle" onClick={() => navigateToUser()}>@{props.post.user}</span>
+              <span className="name" onClick={(e) => navigateToUser(e)}>{author.name}</span>
+              <span className="handle" onClick={(e) => navigateToUser(e)}>@{props.post.user}</span>
               <span className="time"></span>
             </div>
             <div className="options"></div>
@@ -114,44 +127,31 @@ function Post(props) {
               <div className="like">
                 <LikeIcon
                   className={liked ? 'liked' : ''}
-                  onClick={() => handleLike()}
+                  onClick={(e) => handleLike(e)}
                 />
                 <span>{likes}</span>
               </div>
               <div className="reply">
-                <ReplyIcon onClick={() => {
+                <ReplyIcon onClick={(e) => {
                   if(props.login) {
                     props.passReply(props.post)
                   }
+                  e.stopPropagation()
                 }}/>
                 <span>{props.post.replies.length}</span>
               </div>
-              {props.login.id === author.id ? 
               <div className="delete">
-                <DeleteIcon onClick={() => handleDelete()}/>
-              </div>
-  
+              {
+                props.login.id === author.id ? 
+                <DeleteIcon onClick={(e) => handleDelete(e)}/>
                 :
-              ''
+                ''
               }
+              </div>
           
           </div>
           }
         </div>
-        {
-          props.post.replies.length > 0 && !props.inThread && !props.replying ?
-          <Link 
-            className="thread" 
-            to={`/thread/${props.post.id}`} 
-            state={{ 
-              post: props.post,
-              login: props.login 
-          }}>
-            View this thread
-          </ Link>
-          :
-          ''
-        }
       </div>
   
       :

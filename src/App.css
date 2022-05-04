@@ -1,30 +1,113 @@
+/* GENERAL */
 
+:root {
+  --teal-green: #4297a0;
+  --ivory: #f4eae6;
+  --coral: #e57f84;
+  --misty-blue: #2f5061;
+  --lighter-grey: #f2f2f2;
+  --light-grey: #e6e6e6;
+  --grey: #cccccc;
+  --dark-grey: #999999;
+}
 
-.App {
-  position: relative;
-  z-index: 1;
+body {
+  margin: 0;
 }
 
 input {
   outline: none;
 }
 
-.pfp {
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* GENERAL */
+
+.App {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 3fr 4fr 3fr 
+}
+
+.App > div {
+  min-height: 100vh;
+}
+
+.menu {
+ border-right: 1px solid var(--light-grey);
+ min-width: 250px;
+}
+
+.about {
+  border-left: 1px solid var(--light-grey);
+  min-width: 250px;
+}
+
+/* MAIN */
+
+.main > div {
+  margin: auto
+}
+
+/* POST */
+
+.post {
+  border-bottom: 1px solid var(--light-grey);
+  padding: 8px;
+}
+
+.post:hover{
+  background-color: var(--lighter-grey);
+}
+
+.post .pfp {
   width: 82px;
   height: 82px;
   border-radius: 50%;
+}
+
+.metrics {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .metrics svg {
   width: 24px;
   height: 24px;
   cursor: pointer;
-  fill: grey;
+  fill: var(--dark-grey);
   object-fit: cover;
 }
 
 .metrics svg.liked {
   fill: red;
+}
+
+/* USER */
+
+.user {
+  max-width: 60vw;
+}
+
+.user * {
+  max-width: inherit;
+}
+
+.banner label {
+  display: inline-block;
+}
+
+.banner img {
+  object-fit: contain;
 }
 
 /* POST FORM */
@@ -57,7 +140,7 @@ input.invalid {
 
 .reply-form {
   width: 700px;
-  height: 700px;
+  height: 400px;
   background-color: white;
   position: fixed;
   top: 50%;

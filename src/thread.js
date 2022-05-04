@@ -12,6 +12,7 @@ function Thread() {
   const [replyThread, setReplyThread] = useState()
   const [post, setPost] = useState()
   const [login, setLogin] = useState()
+  const [loaded, setLoaded] = useState(false)
 
   const location = useLocation();
 
@@ -34,11 +35,15 @@ function Thread() {
         return db.getPosts({id: reply})
       })).then(replyList => {
         setReplies(...replyList)
+        setLoaded(true)
       })
     }
     if (post) {
       if (replies.length === 0 && post.replies.length > 0) {
         fetchReplies()
+      }
+      else {
+        setLoaded(true)
       }
     }
   }, [post])
@@ -63,7 +68,7 @@ function Thread() {
         <div>
           <Post post={post} key={post.id} login={login} inThread={true} passReply={setReplyThread}/>
           {
-            replies.length > 0 ?
+            loaded ?
             replies.map((reply) => {
               return reply ? 
                 <Post post={reply} key={reply.id} login={login} passReply={setReplyThread}/>

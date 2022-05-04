@@ -7,6 +7,8 @@ import Home from "./home";
 import User from "./user";
 import Signup from "./signup";
 import Thread from "./thread";
+import Menu from "./menu";
+import About from "./about";
 
 import db from "./db";
 
@@ -47,12 +49,14 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <Menu passLogin={fetchLoginProfile}/>
         <Routes>
-          <Route path='/' element={<Home login={login} passLogin={fetchLoginProfile}/>}/>
+          <Route path='/' element={<Home login={login}/>}/>
           <Route exact path='/user/:id' element={<User login={login}/>}/>
           <Route exact path='/thread/:id' element={<Thread />} />
           <Route path='/signup' element={<Signup />} />
         </Routes>
+      <About />
       </BrowserRouter>
     </div>
   );

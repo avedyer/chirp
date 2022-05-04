@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import db from './db'
+import Feed from './feed';
 
 function User(props) {
 
@@ -74,6 +75,7 @@ function User(props) {
         <h2>{user.id}</h2>
       </div>
       <button onClick={handleFollow}>{following ? 'Following' : 'Follow'}</button>
+      <Feed login={props.login} params={{user: user.id}} />
     </div>
   )
 }
