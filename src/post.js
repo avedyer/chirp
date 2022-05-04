@@ -106,16 +106,12 @@ function Post(props) {
           <img className="pfp" src={pfp}></img>
         </div>
         <div className="content">
-          <div className="topline">
-            <div className="info">
-              <span className="name" onClick={(e) => navigateToUser(e)}>{author.name}</span>
-              <span className="handle" onClick={(e) => navigateToUser(e)}>@{props.post.user}</span>
-              <span className="time"></span>
-            </div>
-            <div className="options"></div>
+          <div className="info">
+            <span className="name" onClick={(e) => navigateToUser(e)}>{author.name}</span>
+            <span className="handle" onClick={(e) => navigateToUser(e)}>@{props.post.user}</span>
+            <span className="time"></span>
           </div>
           <div className="text">
-            <p>{props.post.id}</p>
             <p>{props.post.text}</p>
           </div>
           { props.replying ? 

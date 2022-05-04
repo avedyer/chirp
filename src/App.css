@@ -4,6 +4,10 @@
   --teal-green: #4297a0;
   --ivory: #f4eae6;
   --coral: #e57f84;
+  --red: #f53d3d;
+  --light-red: #fbb6b6;
+  --blue: #3d3df5;
+  --light-blue: #b6b6fb;
   --misty-blue: #2f5061;
   --lighter-grey: #f2f2f2;
   --light-grey: #e6e6e6;
@@ -62,34 +66,77 @@ a:hover {
 .post {
   border-bottom: 1px solid var(--light-grey);
   padding: 8px;
+  display: grid;
+  grid-template-columns: 72px auto;
 }
 
 .post:hover{
   background-color: var(--lighter-grey);
+  cursor: pointer;
 }
 
 .post .pfp {
-  width: 82px;
-  height: 82px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
+}
+
+.post .info > span {
+  margin-right: 8px;
+}
+
+.post .name {
+  font-weight: bold;
+}
+
+.post .name:hover {
+  text-decoration: underline;
+}
+
+.post .text {
+  font-size: 14px;
 }
 
 .metrics {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+}
+
+.metrics div {
+  width: 25%;
+  display: flex;
+  align-items: center;
 }
 
 .metrics svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  fill: var(--dark-grey);
   object-fit: cover;
+  margin-right: 4px;
+  padding: 4px;
+}
+
+.metrics .like svg:hover {
+  background-color: var(--light-red);
+  border-radius: 50%;
+}
+
+.metrics .reply svg:hover {
+  stroke: var(--blue);
+  background-color: var(--light-blue);
+  border-radius: 50%;
+}
+
+.metrics .delete svg:hover {
+  background-color: var(--grey);
+  border-radius: 50%;
 }
 
 .metrics svg.liked {
-  fill: red;
+  fill: var(--red);
+  stroke: var(--red);
 }
 
 /* USER */
@@ -113,13 +160,13 @@ a:hover {
 /* POST FORM */
 
 .overflow {
-  color: red;
+  color: var(--red);
 }
 
 /* SIGNUP */
 
 input.invalid {
-  border: 1px solid red;
+  border: 1px solid var(--red)
 }
 
 
