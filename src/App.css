@@ -39,6 +39,26 @@ textarea {
   border-bottom: 1px solid var(--light-grey);
 }
 
+.pfp {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.handle:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* GENERAL */
 
 .App {
@@ -52,11 +72,6 @@ textarea {
   min-height: 100vh;
 }
 
-.menu {
- border-right: 1px solid var(--light-grey);
- min-width: 250px;
-}
-
 .about {
   border-left: 1px solid var(--light-grey);
   min-width: 250px;
@@ -67,6 +82,35 @@ textarea {
 .main > div {
   margin: auto
 }
+
+/* MENU */
+
+.menu {
+  border-right: 1px solid var(--light-grey);
+  min-width: 250px;
+  padding: 0px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.logo {
+  width: 96px;
+  height: 96px;
+  transform: scale(-1, 1);
+  transform-origin: center;
+}
+
+.logo * {
+  fill: var(--teal-green) !important;
+  stroke: var(--teal-green) !important;
+}
+
+.login {
+  width: 60%;
+}
+
 
 /* POST */
 
@@ -82,22 +126,8 @@ textarea {
   cursor: pointer;
 }
 
-.post .pfp {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-}
-
 .post .info > span {
   margin-right: 8px;
-}
-
-.post .name {
-  font-weight: bold;
-}
-
-.post .name:hover {
-  text-decoration: underline;
 }
 
 .post .text {

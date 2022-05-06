@@ -8,6 +8,8 @@ import db from "./db";
 function Login(props) {
 
   const [login, setLogin] = useState(JSON.parse(localStorage.getItem('login')))
+  const [user, setUser] = useState()
+  const [pfp, setPfp] = useState()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -65,11 +67,47 @@ function Login(props) {
     setLogin(null)
   }
 
+  function navigateToUser() {
+    navigate(`/user/${user.id}`, {
+      state: {
+        user: user,
+        login: user,
+      }
+    })
+  }
+
+
+  useEffect(() => {
+    async function fetchUser() {
+      const userList = await db.getUsers({email: login.email})
+      console.log(userList[0])
+      setUser(userList[0])
+    }
+    async function fetchPfp() {
+      try {
+        const url = await db.getPfpUrl(login.pfp);
+        setPfp(url)
+      }
+      catch(err) {
+        const url = await db.getPfpUrl('default-user', 'png');
+        setPfp(url)
+      }
+    }
+    if(!pfp) {
+      fetchPfp()
+    }
+    if (!user) {
+      fetchUser()
+    }
+  }, [login])
+
   return(
     <div className="login">
-      {login ? 
+      {user ? 
         <div className="userInfo">
-          <p>Logged in as {login.email}</p>
+          <img className="pfp" src={pfp}></img>
+          <span className="name" onClick={() => navigateToUser()}>{user.name}</span>
+          <span className="handle" onClick={() => navigateToUser()}>@{user.id}</span>
           <button onClick={() => signOutUser()}>Sign Out</button>
         </div>
         :
