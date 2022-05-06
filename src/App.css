@@ -32,6 +32,13 @@ a:hover {
   text-decoration: underline;
 }
 
+textarea {
+  resize: none;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--light-grey);
+}
+
 /* GENERAL */
 
 .App {
@@ -159,9 +166,16 @@ a:hover {
 
 /* POST FORM */
 
+.post-form textarea {
+  font-size: 20px;
+  max-height: 80vh;
+}
+
 .overflow {
   color: var(--red);
 }
+
+
 
 /* SIGNUP */
 

@@ -2,7 +2,8 @@ import Main from './main';
 import About from './about'
 import Menu from "./menu";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLocation } from 'react-router-dom';
 
 function Home(props) {
 

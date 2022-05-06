@@ -8,9 +8,15 @@ function PostForm(props) {
   const [overflow, setOverflow] = useState(false)
   const [sent, setSent] = useState(false)
 
+  function handleInput(e) {
 
+    const element = e.target;
 
-  function handleInput(input) {
+    element.style.height = "auto";
+    element.style.height = (element.scrollHeight) + "px";
+
+    const input = e.target.value;
+
     setText(input)
     setOverflow(input.length > 280)
   }
@@ -39,10 +45,12 @@ function PostForm(props) {
 
   return(
     <div className="post-form">
-      <textarea rows="4" cols="50" onChange={(e) => handleInput(e.target.value)}></textarea>
-      <span className={overflow ? 'overflow' : ''}>{text.length}/280</span>
-      <button onClick={handleSubmit}>Submit</button>
-      <span>{sent ? 'Posted!' : ''}</span>
+      <textarea rows="4" cols="50" onChange={(e) => handleInput(e)}></textarea>
+      <div className="info">
+        <span className={overflow ? 'overflow' : ''}>{text.length}/280</span>
+        <button onClick={handleSubmit}>Submit</button>
+        <span>{sent ? 'Posted!' : ''}</span>
+      </div>
     </div>
   )
 }

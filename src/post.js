@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as ReplyIcon } from './imgs/reply.svg'
 import { ReactComponent as LikeIcon } from './imgs/like.svg'
