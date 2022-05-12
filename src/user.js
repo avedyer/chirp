@@ -87,10 +87,9 @@ function User(props) {
   if (user && login) {
     return (
       <div className="user">
-        <div className='banner'>
-          <label htmlFor='bannerInput'>
-            <img src={banner} />
-          </label>
+        <div className={`banner ${isLogin ? 'editable' : ''}`}>
+          <img src={banner} />
+          <label htmlFor='bannerInput' className='edit-prompt'><span>Change Banner</span></label>
           {
             isLogin ?
               <input id="bannerInput" type="file" style={{display: "none"}}/>

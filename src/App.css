@@ -187,8 +187,9 @@ textarea {
 }
 
 .banner {
+  position: relative;
   width: 100%;
-  height: 300px;
+  height: 360px;
 }
 
 .banner label {
@@ -202,6 +203,34 @@ textarea {
   height: inherit;
   display: block;
   object-fit: cover;
+}
+
+.banner.editable:hover .edit-prompt {
+  display: block;
+  box-sizing: border-box;
+}
+
+.banner .edit-prompt {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  background-color: hsla(0, 0%, 100%, 40%);
+  width: 360px;
+  height: 120px;
+  border: 1px solid black;
+}
+
+.edit-prompt span {
+  text-align: center;
+  position: absolute;
+  font-size: 24px;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* POST FORM */
