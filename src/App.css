@@ -186,12 +186,22 @@ textarea {
   max-width: inherit;
 }
 
+.banner {
+  width: 100%;
+  height: 300px;
+}
+
 .banner label {
+  width: inherit;
+  height: inherit;
   display: inline-block;
 }
 
 .banner img {
-  object-fit: contain;
+  width: inherit;
+  height: inherit;
+  display: block;
+  object-fit: cover;
 }
 
 /* POST FORM */

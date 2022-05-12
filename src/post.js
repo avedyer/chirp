@@ -107,7 +107,7 @@ function Post(props) {
         <div className="content">
           <div className="info">
             <span className="name" onClick={(e) => navigateToUser(e)}>{author.name}</span>
-            <span className="handle" onClick={(e) => navigateToUser(e)}>@{props.post.user}</span>
+            <span onClick={(e) => navigateToUser(e)}>@<span className='handle'>{props.post.user}</span></span>
             <span className="time"></span>
           </div>
           <div className="text">

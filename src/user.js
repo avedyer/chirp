@@ -7,18 +7,45 @@ import Feed from './feed';
 function User(props) {
 
   const location = useLocation();
-  const user = location.state.user;
-  const login = location.state.login;
 
   const [pfp, setPfp] = useState()
   const [banner, setBanner] = useState()
-  const [isLogin, setIsLogin] = useState(() => {
-    if (props.login){
-      return user.email === props.login.email
+  const [login, setLogin] = useState()
+  const [user, setUser] = useState()
+  const [isLogin, setIsLogin] = useState()
+  const [following, setFollowing] = useState()
+
+  useEffect(() => {
+    if (!user || !login) {
+      if (location.state) {
+        setLogin(location.state.login);
+        setUser(location.state.user);
+      }
+      else {
+        getInfoByUrl()
+      }
     }
-    return false
-  })
-  const [following, setFollowing] = useState(login.following.includes(user.id))
+  }, [])
+
+  async function getInfoByUrl() {
+    const url = window.location.href
+    const exts = url.split('/')
+    const id = exts[exts.length - 1]
+
+    const userArray = await db.getUsers({id: id});
+    setUser(userArray[0])
+
+    const storedLogin = JSON.parse(localStorage.getItem('login'));
+    const loginArray = (await db.getUsers({email: storedLogin.email}));
+    setLogin(loginArray[0])
+  }
+
+  useEffect(() => {
+    if (login && user) {
+      setFollowing(login.following.includes(user.id))
+      setIsLogin(login.email === user.email)
+    }
+  }, [login])
 
   useEffect(() => {
 
@@ -57,27 +84,40 @@ function User(props) {
     db.toggleFollow(user, login)
   }
 
-  return(
-    <div className="user">
-      <div className='banner'>
-        <label htmlFor='bannerInput'>
-          <img src={banner} />
-        </label>
+  if (user && login) {
+    return (
+      <div className="user">
+        <div className='banner'>
+          <label htmlFor='bannerInput'>
+            <img src={banner} />
+          </label>
+          {
+            isLogin ?
+              <input id="bannerInput" type="file" style={{display: "none"}}/>
+            :
+              ''
+          }
+        </div>
+        <div className="info">
+          <h1>{user.name}</h1>
+          <h2>{user.id}</h2>
+        </div>
         {
           isLogin ?
-            <input id="bannerInput" type="file" style={{display: 'none'}}/>
+          ''
           :
-            ''
+          <button onClick={handleFollow}>{following ? 'Following' : 'Follow'}</button>
         }
+        <Feed login={props.login} params={{user: user.id}} />
       </div>
-      <div className="info">
-        <h1>{user.name}</h1>
-        <h2>{user.id}</h2>
-      </div>
-      <button onClick={handleFollow}>{following ? 'Following' : 'Follow'}</button>
-      <Feed login={props.login} params={{user: user.id}} />
-    </div>
-  )
+    )
+  }
+
+  else {
+    return (
+      <p>loading...</p>
+    )
+  }
 }
 
 export default User
