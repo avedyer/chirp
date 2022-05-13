@@ -104,11 +104,24 @@ function Login(props) {
   return(
     <div className="login">
       {user ? 
-        <div className="userInfo">
-          <img className="pfp" src={pfp}></img>
-          <span className="name" onClick={() => navigateToUser()}>{user.name}</span>
-          <span className="handle" onClick={() => navigateToUser()}>@{user.id}</span>
-          <button onClick={() => signOutUser()}>Sign Out</button>
+        <div className="user-menu">
+          <div className="user-info">
+            <div className="sidebar">
+              <img className="pfp" src={pfp}></img>
+            </div>
+            <div className="main">
+              <div className="id-container">
+                <div>
+                  <span className="name" onClick={() => navigateToUser()}>{user.name}</span>
+                </div>
+                <div>
+                  <span className="handle" onClick={() => navigateToUser()}>@{user.id}</span>  
+                </div>
+              </div>
+
+              <button onClick={() => signOutUser()}>Sign Out</button>
+            </div>
+          </div>
         </div>
         :
         <button onClick={() => signIn()}>Sign In with Google</button>

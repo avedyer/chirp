@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import db from './db'
 
@@ -7,6 +7,7 @@ function PostForm(props) {
   const [text, setText] = useState('')
   const [overflow, setOverflow] = useState(false)
   const [sent, setSent] = useState(false)
+  const [counter, setCounter] = useState('')
 
   function handleInput(e) {
 
@@ -41,15 +42,28 @@ function PostForm(props) {
     }
     return post
   }
+
+  useEffect(() => {
+    if (text.length > 0) {
+      setCounter(`${text.length}/280`)
+    }
+    else {
+      setCounter('')
+    }
+  }, [text])
   
 
   return(
     <div className="post-form">
-      <textarea rows="4" cols="50" onChange={(e) => handleInput(e)}></textarea>
-      <div className="info">
-        <span className={overflow ? 'overflow' : ''}>{text.length}/280</span>
-        <button onClick={handleSubmit}>Submit</button>
-        <span>{sent ? 'Posted!' : ''}</span>
+      <div className='form-container'>
+        <div className='input-container'>
+          <textarea rows="4" cols="50" placeholder={`What's on your mind?`} onChange={(e) => handleInput(e)} />
+        </div>
+        
+        <div className="info">
+          <span className={overflow ? 'overflow' : ''}>{counter}</span>
+          <button class={text && !overflow ? '' : 'disabled'}onClick={handleSubmit}>Post</button>
+        </div>
       </div>
     </div>
   )

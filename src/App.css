@@ -36,27 +36,41 @@ textarea {
   resize: none;
   outline: none;
   border: none;
-  border-bottom: 1px solid var(--light-grey);
 }
 
 .pfp {
+  cursor: pointer;
   width: 54px;
   height: 54px;
   border-radius: 50%;
 }
 
 .name {
+  cursor: pointer;
   font-weight: bold;
 }
 
 .name:hover {
   text-decoration: underline;
-  cursor: pointer;
 }
 
 .handle:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+button {
+  height: 2.5em;
+  padding: 0 1.5em;
+  border-radius: 1em;
+  background-color: var(--light-blue);
+  border: none;
+  cursor: pointer;
+}
+
+button.disabled  {
+  cursor: default !important;
+  background-color: var(--grey) !important;
 }
 
 /* GENERAL */
@@ -96,6 +110,7 @@ textarea {
 }
 
 .logo {
+  cursor: pointer;
   width: 96px;
   height: 96px;
   transform: scale(-1, 1);
@@ -109,7 +124,21 @@ textarea {
 
 .login {
   width: 60%;
+  margin-bottom: 12px;
 }
+
+.user-info {
+  display: grid;
+  grid-template-columns: 66px auto;
+}
+
+.id-container {
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 
 
 /* POST */
@@ -217,10 +246,13 @@ textarea {
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
-  background-color: hsla(0, 0%, 100%, 40%);
   width: 360px;
   height: 120px;
   border: 1px solid black;
+}
+
+.banner .edit-prompt:hover {
+  background-color: hsla(0, 0%, 100%, 40%);
 }
 
 .edit-prompt span {
@@ -235,9 +267,33 @@ textarea {
 
 /* POST FORM */
 
+.post-form {
+  border-bottom: 1px solid var(--light-grey);
+}
+
+.post-form .form-container {
+  width: 80%;
+  margin: auto;
+}
+
+.post-form .input-container {
+  border-bottom: 1px solid var(--light-grey);
+}
+
 .post-form textarea {
   font-size: 20px;
   max-height: 80vh;
+}
+
+.post-form .info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.post-form span{
+  margin: 0 4px;
 }
 
 .overflow {
