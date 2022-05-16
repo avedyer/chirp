@@ -62,7 +62,7 @@ function PostForm(props) {
         
         <div className="info">
           <span className={overflow ? 'overflow' : ''}>{counter}</span>
-          <button class={text && !overflow ? '' : 'disabled'}onClick={handleSubmit}>Post</button>
+          <button className={text && !overflow ? '' : 'disabled'}onClick={handleSubmit}>Post</button>
         </div>
       </div>
     </div>

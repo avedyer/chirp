@@ -7,19 +7,10 @@ import db from "./db";
 
 function Login(props) {
 
-  const [login, setLogin] = useState(JSON.parse(localStorage.getItem('login')))
+  const [login, setLogin] = useState()
   const [user, setUser] = useState()
   const [pfp, setPfp] = useState()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (login) {
-      redirect().then(() => {
-        props.passLogin(login);
-      })
-    }
-    props.passLogin(null)
-  }, [login])
 
   async function signIn() {
     const provider = new GoogleAuthProvider();
@@ -50,6 +41,49 @@ function Login(props) {
     
   }
 
+  useEffect(() => {
+
+    if(!login) {
+      setLogin(JSON.parse(localStorage.getItem('login')))
+    }
+    
+    if(login) {
+      redirect().then(() => {
+        props.passLogin(login);
+      })
+    }
+
+    else {
+      props.passLogin(login);
+    }
+  
+    if(!pfp) {
+      fetchPfp()
+    }
+    if (login && !user) {
+      fetchUser()
+    }
+    else {
+      setUser(null)
+    }
+
+    async function fetchUser() {
+      const userList = await db.getUsers({email: login.email})
+      setUser(userList[0])
+    }
+    
+    async function fetchPfp() {
+      try {
+        const url = await db.getPfpUrl(login.pfp);
+        setPfp(url)
+      }
+      catch(err) {
+        const url = await db.getPfpUrl('default-user', 'png');
+        setPfp(url)
+      }
+    }
+  }, [login])
+
   async function redirect() {
     const userList = (await db.getUsers({email: login.email}))
     if(userList.length === 0) {
@@ -75,31 +109,6 @@ function Login(props) {
       }
     })
   }
-
-
-  useEffect(() => {
-    async function fetchUser() {
-      const userList = await db.getUsers({email: login.email})
-      console.log(userList[0])
-      setUser(userList[0])
-    }
-    async function fetchPfp() {
-      try {
-        const url = await db.getPfpUrl(login.pfp);
-        setPfp(url)
-      }
-      catch(err) {
-        const url = await db.getPfpUrl('default-user', 'png');
-        setPfp(url)
-      }
-    }
-    if(!pfp) {
-      fetchPfp()
-    }
-    if (!user) {
-      fetchUser()
-    }
-  }, [login])
 
   return(
     <div className="login">
