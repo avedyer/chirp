@@ -49,6 +49,12 @@ const db = (() => {
     setDoc(doc(firestore, 'users', user.id), user)
   }
 
+  async function getPfpList() {
+    
+    const userList = await getUsers();
+    return userList.map(user => user.pfp)
+  }
+
   async function getPfpUrl(id, ext) {
     const pfpRef = ref(storage, `pfp/${id}.${ext ? ext : 'jpg'}`);
     try {
@@ -212,6 +218,7 @@ const db = (() => {
     setPost,
     setUser,
     setPfp,
+    getPfpList,
     getPfpUrl,
     getBannerUrl,
     getUsers,

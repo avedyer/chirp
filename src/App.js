@@ -51,7 +51,7 @@ function App() {
       <BrowserRouter>
       <Menu passLogin={fetchLoginProfile}/>
         <Routes>
-          <Route path='/' element={<Home login={login}/>}/>
+          <Route path='/' element={<Home login={login} passLoginFromRedirect={setLogin}/>}/>
           <Route exact path='/user/:id' element={<User login={login}/>}/>
           <Route exact path='/thread/:id' element={<Thread />} />
           <Route path='/signup' element={<Signup />} />

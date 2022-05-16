@@ -3,9 +3,14 @@ import { useEffect, useState } from "react";
 
 import { getMetadata } from "firebase/storage";
 
+import { useNavigate } from "react-router-dom";
+
 import db from './db'
+import { set } from "firebase/database";
 
 function Signup() {
+
+  const navigate = useNavigate();
 
   let location = useLocation();
 
@@ -19,6 +24,10 @@ function Signup() {
   const [privateMode, setPrivateMode] = useState(false);
   const [pfpId, setPfpId] = useState()
   const [idMessage, setIdMessage] = useState()
+  const [filename, setFilename] = useState('No file chosen')
+  const [pfp, setPfp] = useState()
+
+  const bioCols = 40;
 
   useEffect(() => {
     if (id) {
@@ -40,6 +49,7 @@ function Signup() {
     }
   }, [id])
 
+
   async function handleId(e) {
 
     const input = e.target.value.trim()
@@ -47,8 +57,9 @@ function Signup() {
 
     const isUnique = await isUniqueId(input)
 
-    setUniqueId(await isUniqueId(input))
-    setValidId(/([a-zA-Z0-9_-]{4,20})/.test(input) && isUnique && e.target.value > 3 && e.target.value < 17)
+    setUniqueId(isUnique)
+
+    setValidId(/^[a-zA-Z0-9_-]*$/.test(input) && isUnique && input.length > 3 && input.length < 17)
     setId(input)
   }
 
@@ -71,14 +82,26 @@ function Signup() {
   async function handlePhoto(e) {
     const file = e.target.files[0];
 
-    const pfpList = await db.getPfpList();
-    
-    let prevIds = []
+    if(file.type.match('image.*')) {
+      setFilename(file.name);
+      setPfp(file)
+    }
+    else {
+      setFilename('Invalid filetype')
+    }
+  }
 
-    pfpList.items.forEach(async (pfp) => {
-      const metadata = await getMetadata(pfp);
-      prevIds.push(metadata.name.split('.')[0]);
-    })
+  function handleBio(e) {
+    const input = e.target.value.trimStart().replace(/(\r\n|\n|\r)/gm, "");
+    e.target.value = input;
+
+    setBio(input)
+
+    setBioOverflow(input.length > 280)
+  }
+
+  async function uploadPfp() {
+    const prevIds = await db.getPfpList();
 
     let id = Math.floor(Math.random() * (10**12)).toString()
 
@@ -88,21 +111,16 @@ function Signup() {
 
     setPfpId(id)
 
-    db.setPfp(file, id)
+    db.setPfp(pfp, id)
   }
 
-  function handleBio(e) {
+  async function handleSubmit() {
 
-    const input = e.target.value.trimStart().replace(/(\r\n|\n|\r)/gm, "");
-    e.target.value = input;
+    console.log(validId, validName, !bioOverflow)
 
-    setBio(input)
-
-    setBioOverflow(input.length > 280)
-  }
-
-  function handleSubmit() {
     if (validId && validName && !bioOverflow) {
+      console.log('uploading...')
+      await uploadPfp();
       const user = {
         email: location.state.email,
         id: id,
@@ -115,39 +133,62 @@ function Signup() {
         following: [],
         likes: []
       }
-      db.setUser(user);
+      db.setUser(user)
+      localStorage.setItem('login', JSON.stringify(user));
+      navigate('/', {
+        state: {
+          login: user
+        }
+      })
     }
   }
 
+  
+
   return(
     <div className="signup">
-      <div id="id">
-        <label htmlFor="id">ID (Must be unique)</label>
-        <input type="text" className={idMessage ? 'invalid': ''} onChange={(e) => handleId(e)}></input>
-        <span>{idMessage}</span>
+      <div className="section">
+        <label htmlFor="id">ID (Must be unique):</label>
+        <div className="feedback">
+          <input id="id" type="text" className={idMessage ? 'invalid': ''} onChange={(e) => handleId(e)} />
+          <span className="warning">{idMessage}</span>
+        </div>
       </div>
-      <div id="name">
-        <label htmlFor="name">Username</label>
-        <input type="text" className={name.length < 48 ? '' : 'invalid'} id onChange={(e) => handleName(e)}></input>
-        <span>{name.length < 48 ? '' : 'Username must be less than 48 characters.'}</span>
+      <div className="section">
+        <label htmlFor="name">Username:</label>
+        <div className="feedback">
+          <input id="name" type="text" className={name.length < 48 ? '' : 'invalid'} onChange={(e) => handleName(e)}/>
+          <span className="warning">{name.length < 48 ? '' : 'Username must be less than 48 characters.'}</span>
+        </div>
       </div>
-      <div id="pfp">
-        <label htmlFor="pfp">Profile Photo</label>
-        <input type="file" onChange={(e) => handlePhoto(e)}/>
+      <div className="section">
+        <span>Profile Photo:</span>
+        <div id="pfp-upload">
+          <button className="file-input">
+            <label className="file-label" htmlFor="pfp">Upload</label>
+          </button>
+          <span id="filename">{filename}</span>
+        </div>
+        <input id="pfp" type="file" accept=".jpg,.jpeg,.png,.webp," onChange={(e) => handlePhoto(e)}/>
       </div>
-      <div id="bio">
-        <label htmlFor="bio">Bio - write a bit about yourself!</label>
-        <textarea id rows="4" cols="50" onKeyUp={(e) => handleBio(e)}></textarea>
-        <span className={bioOverflow ? 'overflow' : ''}>{bio.length}/280</span>
+      <div className="section bio">
+        <label htmlFor="bio">Bio:</label>
+        <div className="feedback">
+          <textarea id='bio' rows={`${Math.min(Math.floor((bio.length/bioCols) + 1), 8)}`} cols={`${bioCols}`} onChange={(e) => handleBio(e)}/>
+          <span id="bio-length" className={bioOverflow ? 'overflow' : ''}>{bio.length}/280</span>
+        </div>
+        
       </div>
-      <div id="private">
-        <span>Private Mode (Only you and your followers can see your posts)</span>
-        <label className="switch">
-          <input type="checkbox" onChange={(e) => setPrivateMode(e.target.value)}/>
-          <span className="slider" />
-        </label>
-      </div>
-      <button onClick={handleSubmit}>Submit</button>
+      {/*
+        <div className="section">
+          <span>Private Mode (Only you and your followers can see your posts)</span>
+          <label className="switch">
+            <input type="checkbox" onChange={(e) => setPrivateMode(e.target.value)}/>
+            <span className="slider" />
+          </label>
+        </div>
+      */}
+      <button className="submit" onClick={handleSubmit}>Submit</button>
     </div>    
   )
 }
