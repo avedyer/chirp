@@ -57,7 +57,7 @@ function PostForm(props) {
     <div className="post-form">
       <div className='form-container'>
         <div className='input-container'>
-          <textarea rows="4" cols="32" placeholder={`What's on your mind?`} onChange={(e) => handleInput(e)} />
+          <textarea rows="4" cols="32" placeholder={props.replyTo ? `Write your reply` : `What's on your mind?`} onChange={(e) => handleInput(e)} />
         </div>
         
         <div className="info">
